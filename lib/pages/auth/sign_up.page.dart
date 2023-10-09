@@ -104,13 +104,8 @@ class _SignUpPageState extends State<SignUpPage> {
       Boxes.getUserBox().add(UserModel(
           id: uuid.v4(), name: name, email: email, password: password));
       Fluttertoast.showToast(
-          msg: "Register successfully, please login",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.CENTER,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.lightBlue,
-          textColor: Colors.white,
-          fontSize: 16.0);
+        msg: "Register successfully, please login",
+      );
       context.pop();
     }
   }
