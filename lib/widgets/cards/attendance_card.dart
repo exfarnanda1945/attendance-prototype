@@ -19,14 +19,20 @@ class AttendanceCard extends StatelessWidget {
               DateFormat.yMMMMEEEEd().format(attendanceItem.enter),
               style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
             ),
-            const SizedBox(height: 8,),
+            const SizedBox(
+              height: 8,
+            ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                    "Enter at ${attendanceItem.enter.hour}:${attendanceItem.enter.minute}",style: const TextStyle(fontSize: 16),),
+                  "Enter at ${attendanceItem.enter.hour}:${attendanceItem.enter.minute}",
+                  style: const TextStyle(fontSize: 16),
+                ),
                 Text(
-                    "Out at ${attendanceItem.out == null ? "--" : "${attendanceItem.out?.hour}:${attendanceItem.out?.minute}"}",style: const TextStyle(fontSize: 16),),
+                  "Out at ${attendanceItem.exit == null ? "--" : "${attendanceItem.exit?.hour}:${attendanceItem.exit?.minute}"}",
+                  style: const TextStyle(fontSize: 16),
+                ),
               ],
             )
           ],

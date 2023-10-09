@@ -30,7 +30,7 @@ class _HomePageState extends State<HomePage> {
         DateUtils.isSameDay(latestUserAttendance?.enter, DateTime.now());
 
     final bool isUserClickOutToday = latestUserAttendance != null &&
-        DateUtils.isSameDay(latestUserAttendance?.out, DateTime.now());
+        DateUtils.isSameDay(latestUserAttendance?.exit, DateTime.now());
 
     final isFinishToday = isUserClickInToday && isUserClickOutToday;
 
@@ -67,7 +67,7 @@ class _HomePageState extends State<HomePage> {
                         TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                 Text(
                     isUserClickOutToday
-                        ? "${latestUserAttendance?.out?.hour}:${latestUserAttendance?.out?.minute}"
+                        ? "${latestUserAttendance?.exit?.hour}:${latestUserAttendance?.exit?.minute}"
                         : "--",
                     style: const TextStyle(fontSize: 18))
               ],
