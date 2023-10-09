@@ -1,3 +1,4 @@
+import 'package:attendance_prototype/pages/attendance/attendance.page.dart';
 import 'package:attendance_prototype/pages/auth/sign_in.page.dart';
 import 'package:attendance_prototype/pages/auth/sign_up.page.dart';
 import 'package:attendance_prototype/pages/main/main.page.dart';
@@ -26,7 +27,29 @@ class AppRouter {
             builder: (context, state) {
               return const MainPage();
             },
-          )
+          ),
+          GoRoute(
+            name: "attendance",
+            path: '/attendance/:userId/:isUserClickIn',
+            builder: (context, state) {
+              final userId = state.pathParameters["userId"];
+              final isUserClickIn = state.pathParameters["isUserClickIn"];
+              bool userState = false;
+
+              if (isUserClickIn != null && isUserClickIn == "true") {
+                userState = true;
+              }
+
+              if (isUserClickIn != null && isUserClickIn == "false") {
+                userState = false;
+              }
+
+              return AttendancePage(
+                userId: userId!,
+                isUserClickIn: userState,
+              );
+            },
+          ),
         ]);
   }
 }

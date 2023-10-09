@@ -1,8 +1,8 @@
 import 'package:attendance_prototype/models/attendance/attendance_model.dart';
-import 'package:attendance_prototype/models/user_login/user_login_model.dart';
 import 'package:attendance_prototype/pages/boxes.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 
@@ -115,42 +115,56 @@ class _HomePageState extends State<HomePage> {
     return Text(text);
   }
 
-  upsertAttendance(bool isUserClickInToday, bool isUserClickOutToday) {
+  upsertAttendance(bool isUserClickInToday, bool isUserClickOutToday) async {
     final userLogin = Boxes.getUserLoginBox().values.first;
+    bool isUserClickIn = false;
 
     if (!isUserClickInToday) {
-      addAttendance(userLogin);
+      isUserClickIn = true;
     }
 
     if (isUserClickInToday && !isUserClickOutToday) {
-      updateAttendance();
+      isUserClickIn = false;
     }
-  }
 
-  void updateAttendance() async {
-    final isModelExist = Boxes.getAttendanceBox()
-        .values
-        .toList()
-        .where((element) => element.id == latestUserAttendance?.id);
+    final Map<String, String> params = {
+      "userId": userLogin.id,
+      "isUserClickIn": isUserClickIn.toString()
+    };
 
-    if (isModelExist.isNotEmpty) {
-      latestUserAttendance?.out = DateTime.now();
-      await latestUserAttendance?.save();
-      Fluttertoast.showToast(msg: "Click out successfully");
+    final result =
+        await context.pushNamed<bool>("attendance", pathParameters: params);
+
+    if (result == true) {
       refreshAttendance();
     }
   }
 
-  void addAttendance(UserLoginModel userLogin) {
-    Boxes.getAttendanceBox().add(AttendanceModel(
-        userId: userLogin.id, enter: DateTime.now(), id: uuid.v4(), out: null));
-    Fluttertoast.showToast(msg: "Click in successfully");
-    refreshAttendance();
-  }
+  // void updateAttendance() async {
+  //   final isModelExist = Boxes.getAttendanceBox()
+  //       .values
+  //       .toList()
+  //       .where((element) => element.id == latestUserAttendance?.id);
+
+  //   if (isModelExist.isNotEmpty) {
+  //     latestUserAttendance?.out = DateTime.now();
+  //     await latestUserAttendance?.save();
+  //     Fluttertoast.showToast(msg: "Click out successfully");
+  //     refreshAttendance();
+  //   }
+  // }
+
+  // void addAttendance(UserLoginModel userLogin) {
+  //   Boxes.getAttendanceBox().add(AttendanceModel(
+  //       userId: userLogin.id, enter: DateTime.now(), id: uuid.v4(), out: null));
+  //   Fluttertoast.showToast(msg: "Click in successfully");
+  //   refreshAttendance();
+  // }
 
   refreshAttendance() {
     setState(() {
       latestUserAttendance = getLatestAttendanceUser();
     });
+    Fluttertoast.showToast(msg: "yeay");
   }
 }
