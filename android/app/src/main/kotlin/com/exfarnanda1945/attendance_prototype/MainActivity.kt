@@ -1,4 +1,4 @@
-package com.samir.attendance_prototype
+package com.exfarnanda1945.attendance_prototype
 
 import io.flutter.embedding.android.FlutterActivity
 
