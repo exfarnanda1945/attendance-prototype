@@ -14,27 +14,44 @@ class AttendanceModel extends HiveObject {
   DateTime enter;
 
   @HiveField(3)
-  DateTime? out;
+  DateTime? exit;
 
   @HiveField(4)
-  int latitude;
+  double enterLatitude;
 
   @HiveField(5)
-  int longitude;
+  double enterLongitude;
 
   @HiveField(6)
-  String networkName;
+  String enterNetworkName;
 
   @HiveField(7)
-  String networkIp;
+  String enterNetworkIp;
 
-  AttendanceModel(
-      {required this.userId,
-      required this.enter,
-      this.out,
-      required this.id,
-      required this.latitude,
-      required this.longitude,
-      required this.networkIp,
-      required this.networkName});
+  @HiveField(8)
+  double? exitLatitude;
+
+  @HiveField(9)
+  double? exitLongitude;
+
+  @HiveField(10)
+  String? exitNetworkName;
+
+  @HiveField(11)
+  String? exitNetworkIp;
+
+  AttendanceModel({
+    required this.id,
+    required this.userId,
+    required this.enter,
+    required this.enterLatitude,
+    required this.enterLongitude,
+    required this.enterNetworkName,
+    required this.enterNetworkIp,
+    this.exit,
+    this.exitLatitude,
+    this.exitLongitude,
+    this.exitNetworkIp,
+    this.exitNetworkName,
+  });
 }

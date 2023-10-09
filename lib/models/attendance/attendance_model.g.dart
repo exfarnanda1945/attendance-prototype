@@ -17,21 +17,25 @@ class AttendanceModelAdapter extends TypeAdapter<AttendanceModel> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return AttendanceModel(
+      id: fields[0] as String,
       userId: fields[1] as String,
       enter: fields[2] as DateTime,
-      out: fields[3] as DateTime?,
-      id: fields[0] as String,
-      latitude: fields[4] as int,
-      longitude: fields[5] as int,
-      networkIp: fields[7] as String,
-      networkName: fields[6] as String,
+      enterLatitude: fields[4] as double,
+      enterLongitude: fields[5] as double,
+      enterNetworkName: fields[6] as String,
+      enterNetworkIp: fields[7] as String,
+      exit: fields[3] as DateTime?,
+      exitLatitude: fields[8] as double?,
+      exitLongitude: fields[9] as double?,
+      exitNetworkIp: fields[11] as String?,
+      exitNetworkName: fields[10] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, AttendanceModel obj) {
     writer
-      ..writeByte(8)
+      ..writeByte(12)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -39,15 +43,23 @@ class AttendanceModelAdapter extends TypeAdapter<AttendanceModel> {
       ..writeByte(2)
       ..write(obj.enter)
       ..writeByte(3)
-      ..write(obj.out)
+      ..write(obj.exit)
       ..writeByte(4)
-      ..write(obj.latitude)
+      ..write(obj.enterLatitude)
       ..writeByte(5)
-      ..write(obj.longitude)
+      ..write(obj.enterLongitude)
       ..writeByte(6)
-      ..write(obj.networkName)
+      ..write(obj.enterNetworkName)
       ..writeByte(7)
-      ..write(obj.networkIp);
+      ..write(obj.enterNetworkIp)
+      ..writeByte(8)
+      ..write(obj.exitLatitude)
+      ..writeByte(9)
+      ..write(obj.exitLongitude)
+      ..writeByte(10)
+      ..write(obj.exitNetworkName)
+      ..writeByte(11)
+      ..write(obj.exitNetworkIp);
   }
 
   @override
