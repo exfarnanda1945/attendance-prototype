@@ -21,13 +21,17 @@ class AttendanceModelAdapter extends TypeAdapter<AttendanceModel> {
       enter: fields[2] as DateTime,
       out: fields[3] as DateTime?,
       id: fields[0] as String,
+      latitude: fields[4] as int,
+      longitude: fields[5] as int,
+      networkIp: fields[7] as String,
+      networkName: fields[6] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, AttendanceModel obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(8)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -35,7 +39,15 @@ class AttendanceModelAdapter extends TypeAdapter<AttendanceModel> {
       ..writeByte(2)
       ..write(obj.enter)
       ..writeByte(3)
-      ..write(obj.out);
+      ..write(obj.out)
+      ..writeByte(4)
+      ..write(obj.latitude)
+      ..writeByte(5)
+      ..write(obj.longitude)
+      ..writeByte(6)
+      ..write(obj.networkName)
+      ..writeByte(7)
+      ..write(obj.networkIp);
   }
 
   @override
