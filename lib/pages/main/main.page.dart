@@ -1,7 +1,7 @@
 import 'package:attendance_prototype/models/user_login/user_login_model.dart';
 import 'package:attendance_prototype/pages/boxes.dart';
 import 'package:attendance_prototype/pages/main/account.page.dart';
-import 'package:attendance_prototype/pages/main/attendance.page.dart';
+import 'package:attendance_prototype/pages/main/attendance_history.page.dart';
 import 'package:attendance_prototype/pages/main/home.page.dart';
 import 'package:attendance_prototype/widgets/bottom_navigation/bottom_navigation.dart';
 import 'package:attendance_prototype/widgets/bottom_navigation/navigation_bar_menu.dart';
@@ -48,7 +48,7 @@ class _MainPageState extends State<MainPage> {
         screen = const HomePage();
         break;
       case 'attendance':
-        screen = AttendancePage(
+        screen = AttendanceHistoryPage(
           userLogin: user,
         );
         break;
