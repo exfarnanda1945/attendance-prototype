@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:network_info_plus/network_info_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -20,6 +19,7 @@ class _AttendancePageState extends State<AttendancePage> {
   Position? currentPosition;
   String? deviceNetworkName;
   String? deviceNetworkIp;
+  bool isMapLoading = true;
 
   @override
   void initState() {
@@ -32,24 +32,16 @@ class _AttendancePageState extends State<AttendancePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-                "UserId => ${widget.userId} and isUserClickIn => ${widget.isUserClickIn.toString()}"),
-            Text(
-                "Position => lat: ${currentPosition?.latitude} and lng: ${currentPosition?.longitude}"),
-            Text(
-                "Network => Name: $deviceNetworkName and ip: $deviceNetworkIp"),
-            ElevatedButton(
-                onPressed: () {
-                  context.pop(true);
-                },
-                child: const Text("Close"))
-          ],
-        ),
+      appBar: AppBar(
+        title: const Text("Today"),
       ),
+      body: isMapLoading
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : Stack(children: [
+              _buildMaps(currentPosition!),
+            ]),
     );
   }
 
@@ -70,16 +62,31 @@ class _AttendancePageState extends State<AttendancePage> {
 
   getCurrentLocation() async {
     try {
-      Position nowLoc = await Geolocator.getCurrentPosition(
+      final location = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.best);
       setState(() {
-        currentPosition = nowLoc;
+        currentPosition = location;
+        isMapLoading = false;
       });
     } catch (e) {
       setState(() {
-        currentPosition = null;
+        isMapLoading = false;
       });
       rethrow;
     }
+  }
+
+  Widget _buildMaps(Position currentPosition) {
+    print("here we go ${currentPosition.toString()}");
+
+    return GoogleMap(
+      mapType: MapType.normal,
+      initialCameraPosition: CameraPosition(
+          target: LatLng(currentPosition.latitude, currentPosition.longitude),
+          zoom: 17),
+      onMapCreated: (GoogleMapController controller) {},
+      myLocationButtonEnabled: true,
+      myLocationEnabled: true,
+    );
   }
 }
