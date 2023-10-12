@@ -16,7 +16,7 @@ class AttendanceCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              DateFormat.yMMMMEEEEd().format(attendanceItem.enter),
+              DateFormat.yMMMMEEEEd().format(attendanceItem.enter.time),
               style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
             ),
             const SizedBox(
@@ -26,11 +26,11 @@ class AttendanceCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Enter at ${attendanceItem.enter.hour}:${attendanceItem.enter.minute}",
+                  "Enter at ${attendanceItem.enter.time.hour}:${attendanceItem.enter.time.minute}",
                   style: const TextStyle(fontSize: 16),
                 ),
                 Text(
-                  "Out at ${attendanceItem.exit == null ? "--" : "${attendanceItem.exit?.hour}:${attendanceItem.exit?.minute}"}",
+                  "Out at ${attendanceItem.exit == null ? "--" : "${attendanceItem.exit?.time?.hour}:${attendanceItem.exit?.time?.minute}"}",
                   style: const TextStyle(fontSize: 16),
                 ),
               ],
