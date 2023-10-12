@@ -26,13 +26,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final bool isUserClickInToday = latestUserAttendance != null &&
-        DateUtils.isSameDay(latestUserAttendance?.enter, DateTime.now());
-
-    final bool isUserClickOutToday = latestUserAttendance != null &&
-        DateUtils.isSameDay(latestUserAttendance?.exit, DateTime.now());
-
-    final isFinishToday = isUserClickInToday && isUserClickOutToday;
+    final isFinishToday = isUserClickInToday() && isUserClickOutToday();
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -54,8 +48,8 @@ class _HomePageState extends State<HomePage> {
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                 ),
                 Text(
-                    isUserClickInToday
-                        ? "${latestUserAttendance?.enter.hour}:${latestUserAttendance?.enter.minute}"
+                    isUserClickInToday()
+                        ? "${latestUserAttendance?.enter.time.hour}:${latestUserAttendance?.enter.time.minute}"
                         : "--",
                     style: const TextStyle(fontSize: 18))
               ],
@@ -66,8 +60,8 @@ class _HomePageState extends State<HomePage> {
                     style:
                         TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                 Text(
-                    isUserClickOutToday
-                        ? "${latestUserAttendance?.exit?.hour}:${latestUserAttendance?.exit?.minute}"
+                    isUserClickOutToday()
+                        ? "${latestUserAttendance?.exit?.time?.hour}:${latestUserAttendance?.exit?.time?.minute}"
                         : "--",
                     style: const TextStyle(fontSize: 18))
               ],
@@ -79,10 +73,8 @@ class _HomePageState extends State<HomePage> {
         ),
         !isFinishToday
             ? ElevatedButton(
-                onPressed: () => isFinishToday
-                    ? null
-                    : upsertAttendance(isUserClickInToday, isUserClickOutToday),
-                child: buildTextBtn(isUserClickInToday, isUserClickOutToday))
+                onPressed: () => isFinishToday ? null : upsertAttendance(),
+                child: buildTextBtn())
             : const Text(""),
       ],
     );
@@ -101,29 +93,29 @@ class _HomePageState extends State<HomePage> {
     return getAttendances.toList().reversed.first;
   }
 
-  Widget buildTextBtn(bool isUserClickInToday, bool isUserClickOutToday) {
+  Widget buildTextBtn() {
     String text = "";
 
-    if (isUserClickInToday) {
+    if (isUserClickInToday()) {
       text = "Click Out";
     }
 
-    if (!isUserClickInToday || isUserClickOutToday) {
+    if (!isUserClickInToday() || isUserClickOutToday()) {
       text = "Click In";
     }
 
     return Text(text);
   }
 
-  upsertAttendance(bool isUserClickInToday, bool isUserClickOutToday) async {
+  upsertAttendance() async {
     final userLogin = Boxes.getUserLoginBox().values.first;
     bool isUserClickIn = false;
 
-    if (!isUserClickInToday) {
+    if (!isUserClickInToday()) {
       isUserClickIn = true;
     }
 
-    if (isUserClickInToday && !isUserClickOutToday) {
+    if (isUserClickInToday() && !isUserClickOutToday()) {
       isUserClickIn = false;
     }
 
@@ -166,5 +158,15 @@ class _HomePageState extends State<HomePage> {
       latestUserAttendance = getLatestAttendanceUser();
     });
     Fluttertoast.showToast(msg: "yeay");
+  }
+
+  bool isUserClickInToday() {
+    return latestUserAttendance != null &&
+        DateUtils.isSameDay(latestUserAttendance?.enter.time, DateTime.now());
+  }
+
+  bool isUserClickOutToday() {
+    return latestUserAttendance != null &&
+        DateUtils.isSameDay(latestUserAttendance?.exit?.time, DateTime.now());
   }
 }
