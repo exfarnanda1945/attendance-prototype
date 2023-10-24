@@ -20,12 +20,13 @@ class _AttendancePageState extends State<AttendancePage> {
   String? deviceNetworkName;
   String? deviceNetworkIp;
   bool isMapLoading = true;
+  bool isLocPermissionDenied = false;
+  bool isLocationDisable = false;
 
   @override
   void initState() {
     super.initState();
-    requestLocation();
-    getCurrentLocation();
+    requestLocation(true);
     getNetworkStatus();
   }
 
@@ -35,18 +36,86 @@ class _AttendancePageState extends State<AttendancePage> {
       appBar: AppBar(
         title: const Text("Today"),
       ),
-      body: isMapLoading
-          ? const Center(
-              child: CircularProgressIndicator(),
-            )
-          : Stack(children: [
-              _buildMaps(currentPosition!),
-            ]),
+      body: body(),
     );
   }
 
-  Future requestLocation() async {
-    await Permission.location.request();
+  Widget body() {
+    if (isMapLoading) {
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
+
+    if (isLocPermissionDenied) {
+      return mapError(() async {
+        await requestLocation(false);
+      }, "Please enable location permission.");
+    }
+
+    if (isLocationDisable) {
+      return mapError(() async {
+        await getCurrentLocation(false);
+      }, "Please enable gps");
+    }
+
+    return Stack(children: [
+      _buildMaps(currentPosition!),
+      Align(
+        alignment: Alignment.bottomCenter,
+        child: SizedBox(
+          height: MediaQuery.sizeOf(context).height * .23,
+          width: double.infinity,
+          child: Material(
+            elevation: 8,
+            borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(10), topRight: Radius.circular(10)),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "SSID : $deviceNetworkName",
+                    style: const TextStyle(fontWeight: FontWeight.w400),
+                  ),
+                  Text("IP: $deviceNetworkIp",
+                      style: const TextStyle(fontWeight: FontWeight.w400)),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  ElevatedButton(
+                    onPressed: () {},
+                    child: const Text("Click In"),
+                  )
+                ],
+              ),
+            ),
+          ),
+        ),
+      )
+    ]);
+  }
+
+  Future requestLocation(bool isFirstTake) async {
+    if (!isFirstTake) {
+      setState(() {
+        isMapLoading = true;
+      });
+    }
+
+    await Permission.location.request().then((value) async {
+      if (!value.isGranted) {
+        setState(() {
+          isMapLoading = false;
+          isLocPermissionDenied = true;
+        });
+      }
+
+      if (value.isGranted) {
+        await getCurrentLocation(true);
+      }
+    });
   }
 
   getNetworkStatus() async {
@@ -60,25 +129,30 @@ class _AttendancePageState extends State<AttendancePage> {
     });
   }
 
-  getCurrentLocation() async {
+  getCurrentLocation(bool isFirstTake) async {
+    if (!isFirstTake) {
+      setState(() {
+        isMapLoading = true;
+      });
+    }
+
     try {
       final location = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.best);
       setState(() {
         currentPosition = location;
         isMapLoading = false;
+        isLocationDisable = false;
       });
     } catch (e) {
       setState(() {
         isMapLoading = false;
+        isLocationDisable = true;
       });
-      rethrow;
     }
   }
 
   Widget _buildMaps(Position currentPosition) {
-    print("here we go ${currentPosition.toString()}");
-
     return GoogleMap(
       mapType: MapType.normal,
       initialCameraPosition: CameraPosition(
@@ -87,6 +161,26 @@ class _AttendancePageState extends State<AttendancePage> {
       onMapCreated: (GoogleMapController controller) {},
       myLocationButtonEnabled: true,
       myLocationEnabled: true,
+      zoomGesturesEnabled: false,
+      scrollGesturesEnabled: false,
+    );
+  }
+
+  Widget mapError(VoidCallback onRefresh, String message) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            child: Text(
+              message,
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+            ),
+          ),
+          ElevatedButton(onPressed: onRefresh, child: const Text("Refresh"))
+        ],
+      ),
     );
   }
 }
