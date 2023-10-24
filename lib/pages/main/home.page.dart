@@ -157,7 +157,6 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       latestUserAttendance = getLatestAttendanceUser();
     });
-    Fluttertoast.showToast(msg: "yeay");
   }
 
   bool isUserClickInToday() {
