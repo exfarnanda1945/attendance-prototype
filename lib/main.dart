@@ -7,8 +7,8 @@ import 'package:attendance_prototype/models/base/location/location_detail_model.
 import 'package:attendance_prototype/models/base/network/network_detail_model.dart';
 import 'package:attendance_prototype/models/user/user_model.dart';
 import 'package:attendance_prototype/models/user_login/user_login_model.dart';
-import 'package:attendance_prototype/pages/boxes.dart';
 import 'package:attendance_prototype/routes/app-router.dart';
+import 'package:attendance_prototype/utils/boxes.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';

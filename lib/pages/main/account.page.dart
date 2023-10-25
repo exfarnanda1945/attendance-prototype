@@ -1,5 +1,5 @@
 import 'package:attendance_prototype/models/user_login/user_login_model.dart';
-import 'package:attendance_prototype/pages/boxes.dart';
+import 'package:attendance_prototype/utils/boxes.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 

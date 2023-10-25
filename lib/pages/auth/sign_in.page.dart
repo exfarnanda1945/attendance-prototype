@@ -1,6 +1,6 @@
 import 'package:attendance_prototype/models/user/user_model.dart';
 import 'package:attendance_prototype/models/user_login/user_login_model.dart';
-import 'package:attendance_prototype/pages/boxes.dart';
+import 'package:attendance_prototype/utils/boxes.dart';
 import 'package:attendance_prototype/widgets/forms/sign_in_form.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -103,12 +103,15 @@ class _SignInPageState extends State<SignInPage> {
         Fluttertoast.showToast(msg: "Login Failed");
       }
 
-      if (users.isNotEmpty) {
+      try {
         UserModel user = users[0];
         Boxes.getUserLoginBox().add(
             UserLoginModel(email: user.email, name: user.name, id: user.id));
         Fluttertoast.showToast(msg: "Welcome ${user.name}");
         context.go('/main');
+      } catch (e) {
+        Fluttertoast.showToast(
+            msg: "Something went wrong, please try again...");
       }
     }
   }

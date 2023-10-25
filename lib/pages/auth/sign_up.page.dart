@@ -1,5 +1,5 @@
 import 'package:attendance_prototype/models/user/user_model.dart';
-import 'package:attendance_prototype/pages/boxes.dart';
+import 'package:attendance_prototype/utils/boxes.dart';
 import 'package:attendance_prototype/widgets/forms/sign_up_form.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -101,12 +101,18 @@ class _SignUpPageState extends State<SignUpPage> {
     final isValidate = _formKey.currentState!.validate();
 
     if (isValidate) {
-      Boxes.getUserBox().add(UserModel(
-          id: uuid.v4(), name: name, email: email, password: password));
-      Fluttertoast.showToast(
-        msg: "Register successfully, please login",
-      );
-      context.pop();
+      try {
+        Boxes.getUserBox().add(UserModel(
+            id: uuid.v4(), name: name, email: email, password: password));
+        Fluttertoast.showToast(
+          msg: "Register successfully, please login",
+        );
+        context.pop();
+      } catch (e) {
+        Fluttertoast.showToast(
+          msg: "Failed to register...",
+        );
+      }
     }
   }
 }
