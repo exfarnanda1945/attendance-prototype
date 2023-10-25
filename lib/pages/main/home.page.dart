@@ -1,12 +1,9 @@
 import 'package:attendance_prototype/models/attendance/attendance_model.dart';
-import 'package:attendance_prototype/pages/boxes.dart';
+import 'package:attendance_prototype/utils/boxes.dart';
+import 'package:attendance_prototype/utils/constant.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
-import 'package:uuid/uuid.dart';
-
-const uuid = Uuid();
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -73,7 +70,7 @@ class _HomePageState extends State<HomePage> {
         ),
         !isFinishToday
             ? ElevatedButton(
-                onPressed: () => isFinishToday ? null : upsertAttendance(),
+                onPressed: () => isFinishToday ? null : goToAttendancePage(),
                 child: buildTextBtn())
             : const Text(""),
       ],
@@ -107,7 +104,7 @@ class _HomePageState extends State<HomePage> {
     return Text(text);
   }
 
-  upsertAttendance() async {
+  goToAttendancePage() async {
     final userLogin = Boxes.getUserLoginBox().values.first;
     bool isUserClickIn = false;
 
@@ -120,6 +117,7 @@ class _HomePageState extends State<HomePage> {
     }
 
     final Map<String, String> params = {
+      "attendanceId": latestUserAttendance?.id ?? Constants.nullAsString,
       "userId": userLogin.id,
       "isUserClickIn": isUserClickIn.toString()
     };
@@ -131,27 +129,6 @@ class _HomePageState extends State<HomePage> {
       refreshAttendance();
     }
   }
-
-  // void updateAttendance() async {
-  //   final isModelExist = Boxes.getAttendanceBox()
-  //       .values
-  //       .toList()
-  //       .where((element) => element.id == latestUserAttendance?.id);
-
-  //   if (isModelExist.isNotEmpty) {
-  //     latestUserAttendance?.out = DateTime.now();
-  //     await latestUserAttendance?.save();
-  //     Fluttertoast.showToast(msg: "Click out successfully");
-  //     refreshAttendance();
-  //   }
-  // }
-
-  // void addAttendance(UserLoginModel userLogin) {
-  //   Boxes.getAttendanceBox().add(AttendanceModel(
-  //       userId: userLogin.id, enter: DateTime.now(), id: uuid.v4(), out: null));
-  //   Fluttertoast.showToast(msg: "Click in successfully");
-  //   refreshAttendance();
-  // }
 
   refreshAttendance() {
     setState(() {
