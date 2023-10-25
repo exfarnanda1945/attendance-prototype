@@ -25,4 +25,16 @@ class AttendanceModel extends HiveObject {
     required this.enter,
     this.exit,
   });
+
+  AttendanceModel copy({
+    String? id,
+    String? userId,
+    AttendanceEnterDetailModel? enter,
+    AttendanceExitDetailModel? exit,
+  }) =>
+      AttendanceModel(
+          id: id ?? this.id,
+          userId: userId ?? this.userId,
+          enter: enter ?? this.enter,
+          exit: exit ?? this.exit);
 }
