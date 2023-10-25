@@ -2,6 +2,7 @@ import 'package:attendance_prototype/pages/attendance/attendance.page.dart';
 import 'package:attendance_prototype/pages/auth/sign_in.page.dart';
 import 'package:attendance_prototype/pages/auth/sign_up.page.dart';
 import 'package:attendance_prototype/pages/main/main.page.dart';
+import 'package:attendance_prototype/utils/constant.dart';
 import 'package:go_router/go_router.dart';
 
 class AppRouter {
@@ -30,12 +31,13 @@ class AppRouter {
           ),
           GoRoute(
             name: "attendance",
-            path: '/attendance/:userId/:isUserClickIn',
+            path: '/attendance/:userId/:isUserClickIn/:attendanceId',
             builder: (context, state) {
+              final attendanceIdParam = state.pathParameters["attendanceId"];
               final userId = state.pathParameters["userId"];
               final isUserClickIn = state.pathParameters["isUserClickIn"];
-              bool userState = false;
 
+              bool userState = false;
               if (isUserClickIn != null && isUserClickIn == "true") {
                 userState = true;
               }
@@ -44,7 +46,12 @@ class AppRouter {
                 userState = false;
               }
 
+              String? attendanceId = attendanceIdParam == Constants.nullAsString
+                  ? null
+                  : attendanceIdParam;
+
               return AttendancePage(
+                attendanceId: attendanceId,
                 userId: userId!,
                 isUserClickIn: userState,
               );
