@@ -1,14 +1,35 @@
+import 'dart:developer';
+
+import 'package:attendance_prototype/models/attendance/attendance_model.dart';
+import 'package:attendance_prototype/models/attendance/enter_detail/attendance_enter_detail_model.dart';
+import 'package:attendance_prototype/models/attendance/exit_detail/attendance_exit_detail_model.dart';
+import 'package:attendance_prototype/models/base/location/location_detail_model.dart';
+import 'package:attendance_prototype/models/base/network/network_detail_model.dart';
+import 'package:attendance_prototype/pages/attendance/error_maps_attendance.dart';
+import 'package:attendance_prototype/pages/attendance/maps_attendance.dart';
+import 'package:attendance_prototype/utils/boxes.dart';
+import 'package:attendance_prototype/utils/constant.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:network_info_plus/network_info_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:uuid/uuid.dart';
+
+const uuid = Uuid();
 
 class AttendancePage extends StatefulWidget {
-  AttendancePage({super.key, required this.userId, this.isUserClickIn});
+  AttendancePage(
+      {super.key,
+      required this.userId,
+      required this.isUserClickIn,
+      required this.attendanceId});
 
   String userId;
-  bool? isUserClickIn;
+  bool isUserClickIn;
+  String? attendanceId;
 
   @override
   State<AttendancePage> createState() => _AttendancePageState();
@@ -26,8 +47,7 @@ class _AttendancePageState extends State<AttendancePage> {
   @override
   void initState() {
     super.initState();
-    requestLocation(true);
-    getNetworkStatus();
+    requestLocationAndNetwork(true);
   }
 
   @override
@@ -36,11 +56,11 @@ class _AttendancePageState extends State<AttendancePage> {
       appBar: AppBar(
         title: const Text("Today"),
       ),
-      body: body(),
+      body: renderBody(),
     );
   }
 
-  Widget body() {
+  Widget renderBody() {
     if (isMapLoading) {
       return const Center(
         child: CircularProgressIndicator(),
@@ -48,19 +68,23 @@ class _AttendancePageState extends State<AttendancePage> {
     }
 
     if (isLocPermissionDenied) {
-      return mapError(() async {
-        await requestLocation(false);
-      }, "Please enable location permission.");
+      return ErrorMapsAttendance(
+          onRefresh: () async {
+            await requestLocationAndNetwork(false);
+          },
+          message: "Please enable location permission.");
     }
 
     if (isLocationDisable) {
-      return mapError(() async {
-        await getCurrentLocation(false);
-      }, "Please enable gps");
+      return ErrorMapsAttendance(
+          onRefresh: () async {
+            await getCurrentLocation(false);
+          },
+          message: "Please enable location permission.");
     }
 
     return Stack(children: [
-      _buildMaps(currentPosition!),
+      MapsAttendance(position: currentPosition!),
       Align(
         alignment: Alignment.bottomCenter,
         child: SizedBox(
@@ -85,8 +109,9 @@ class _AttendancePageState extends State<AttendancePage> {
                     height: 20,
                   ),
                   ElevatedButton(
-                    onPressed: () {},
-                    child: const Text("Click In"),
+                    onPressed: upsertAttendance,
+                    child:
+                        Text(widget.isUserClickIn ? "Click In" : "Click out"),
                   )
                 ],
               ),
@@ -97,7 +122,7 @@ class _AttendancePageState extends State<AttendancePage> {
     ]);
   }
 
-  Future requestLocation(bool isFirstTake) async {
+  Future requestLocationAndNetwork(bool isFirstTake) async {
     if (!isFirstTake) {
       setState(() {
         isMapLoading = true;
@@ -113,9 +138,9 @@ class _AttendancePageState extends State<AttendancePage> {
       }
 
       if (value.isGranted) {
-        await getCurrentLocation(true);
+        await getCurrentLocation(isFirstTake);
       }
-    });
+    }).whenComplete(() => getNetworkStatus());
   }
 
   getNetworkStatus() async {
@@ -152,35 +177,66 @@ class _AttendancePageState extends State<AttendancePage> {
     }
   }
 
-  Widget _buildMaps(Position currentPosition) {
-    return GoogleMap(
-      mapType: MapType.normal,
-      initialCameraPosition: CameraPosition(
-          target: LatLng(currentPosition.latitude, currentPosition.longitude),
-          zoom: 17),
-      onMapCreated: (GoogleMapController controller) {},
-      myLocationButtonEnabled: true,
-      myLocationEnabled: true,
-      zoomGesturesEnabled: false,
-      scrollGesturesEnabled: false,
-    );
+  upsertAttendance() {
+    if (widget.isUserClickIn && widget.attendanceId == null) {
+      addAttendance();
+    }
+
+    if (!widget.isUserClickIn && widget.attendanceId != null) {
+      updateAttendance();
+    }
   }
 
-  Widget mapError(VoidCallback onRefresh, String message) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8),
-            child: Text(
-              message,
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-            ),
-          ),
-          ElevatedButton(onPressed: onRefresh, child: const Text("Refresh"))
-        ],
-      ),
-    );
+  void addAttendance() {
+    AttendanceModel attendanceIn = AttendanceModel(
+        id: uuid.v4(),
+        userId: widget.userId,
+        enter: AttendanceEnterDetailModel(
+            location: LocationDetailModel(
+                lat: currentPosition!.latitude,
+                long: currentPosition!.longitude),
+            network: NetworkDetailModel(
+                name: deviceNetworkName ?? Constants.unknownAsString,
+                ip: deviceNetworkIp ?? Constants.unknownAsString),
+            time: DateTime.now()),
+        exit: AttendanceExitDetailModel());
+
+    try {
+      Boxes.getAttendanceBox().add(attendanceIn);
+      Fluttertoast.showToast(msg: "Click in successfully");
+      context.pop(true);
+    } catch (e) {
+      Fluttertoast.showToast(msg: "Something went wrong...");
+    }
+  }
+
+  void updateAttendance() async {
+    final isModelExist = Boxes.getAttendanceBox()
+        .values
+        .toList()
+        .where((attendance) => attendance.id == widget.attendanceId);
+
+    if (isModelExist.isNotEmpty) {
+      final getAttendance = isModelExist.first;
+      final updateAttendance = getAttendance.copy(
+          exit: AttendanceExitDetailModel(
+              location: LocationDetailModel(
+                  lat: currentPosition!.latitude,
+                  long: currentPosition!.longitude),
+              network: NetworkDetailModel(
+                  name: deviceNetworkName ?? Constants.unknownAsString,
+                  ip: deviceNetworkIp ?? Constants.unknownAsString),
+              time: DateTime.now()));
+      inspect(updateAttendance);
+
+      try {
+        updateAttendance.save();
+        Fluttertoast.showToast(msg: "Click out successfully");
+        if (mounted) context.pop(true);
+      } catch (e) {
+        print(e.toString());
+        Fluttertoast.showToast(msg: "Something went wrong...");
+      }
+    }
   }
 }
