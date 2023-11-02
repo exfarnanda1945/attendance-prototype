@@ -87,7 +87,14 @@ class _HomePageState extends State<HomePage> {
       return null;
     }
 
-    return getAttendances.toList().reversed.first;
+    final latest = getAttendances.toList().reversed.first;
+    final isSameDay = DateUtils.isSameDay(latest.enter.time, DateTime.now());
+
+    if (!isSameDay) {
+      return null;
+    }
+
+    return latest;
   }
 
   Widget buildTextBtn() {
