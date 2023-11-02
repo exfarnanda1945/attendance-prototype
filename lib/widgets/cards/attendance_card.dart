@@ -1,4 +1,5 @@
 import 'package:attendance_prototype/models/attendance/attendance_model.dart';
+import 'package:attendance_prototype/widgets/cards/attendance_card_detail.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -22,19 +23,14 @@ class AttendanceCard extends StatelessWidget {
             const SizedBox(
               height: 8,
             ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "Enter at ${attendanceItem.enter.time.hour}:${attendanceItem.enter.time.minute}",
-                  style: const TextStyle(fontSize: 16),
-                ),
-                Text(
-                  "Out at ${attendanceItem.exit == null ? "--" : "${attendanceItem.exit?.time?.hour}:${attendanceItem.exit?.time?.minute}"}",
-                  style: const TextStyle(fontSize: 16),
-                ),
-              ],
-            )
+            AttendanceCardDetail(
+                attendanceDetailItem: attendanceItem.enter, isEnter: true),
+            attendanceItem.exit != null
+                ? AttendanceCardDetail(
+                    attendanceDetailItem: attendanceItem.exit!,
+                    isEnter: false,
+                  )
+                : const Text("")
           ],
         ),
       ),
