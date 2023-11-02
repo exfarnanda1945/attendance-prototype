@@ -198,26 +198,24 @@ class _AttendancePageState extends State<AttendancePage> {
             network: NetworkDetailModel(
                 name: deviceNetworkName ?? Constants.unknownAsString,
                 ip: deviceNetworkIp ?? Constants.unknownAsString),
-            time: DateTime.now()),
-        exit: AttendanceExitDetailModel());
+            time: DateTime.now()));
 
     try {
       Boxes.getAttendanceBox().add(attendanceIn);
       Fluttertoast.showToast(msg: "Click in successfully");
-      context.pop(true);
+      if (mounted) context.pop(true);
     } catch (e) {
       Fluttertoast.showToast(msg: "Something went wrong...");
     }
   }
 
   void updateAttendance() async {
-    final isModelExist = Boxes.getAttendanceBox()
-        .values
-        .toList()
-        .where((attendance) => attendance.id == widget.attendanceId);
+    final attendances = Boxes.getAttendanceBox().values.toList();
+    final attendanceIndex = attendances
+        .indexWhere((attendance) => attendance.id == widget.attendanceId);
 
-    if (isModelExist.isNotEmpty) {
-      final getAttendance = isModelExist.first;
+    if (attendanceIndex != -1) {
+      final getAttendance = attendances[attendanceIndex];
       final updateAttendance = getAttendance.copy(
           exit: AttendanceExitDetailModel(
               location: LocationDetailModel(
@@ -227,10 +225,9 @@ class _AttendancePageState extends State<AttendancePage> {
                   name: deviceNetworkName ?? Constants.unknownAsString,
                   ip: deviceNetworkIp ?? Constants.unknownAsString),
               time: DateTime.now()));
-      inspect(updateAttendance);
 
       try {
-        updateAttendance.save();
+        await Boxes.getAttendanceBox().putAt(attendanceIndex, updateAttendance);
         Fluttertoast.showToast(msg: "Click out successfully");
         if (mounted) context.pop(true);
       } catch (e) {
