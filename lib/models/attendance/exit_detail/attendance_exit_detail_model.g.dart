@@ -18,9 +18,9 @@ class AttendanceExitDetailModelAdapter
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return AttendanceExitDetailModel(
-      location: fields[0] as LocationDetailModel?,
-      network: fields[1] as NetworkDetailModel?,
-      time: fields[3] as DateTime?,
+      location: fields[0] as LocationDetailModel,
+      network: fields[1] as NetworkDetailModel,
+      time: fields[3] as DateTime,
     );
   }
 
