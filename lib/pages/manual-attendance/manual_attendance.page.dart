@@ -1,4 +1,5 @@
 import 'package:attendance_prototype/widgets/picker/datepicker.dart';
+import 'package:attendance_prototype/widgets/picker/timepicker.dart';
 import 'package:flutter/material.dart';
 
 class ManualAttendancePage extends StatefulWidget {
@@ -9,37 +10,51 @@ class ManualAttendancePage extends StatefulWidget {
 }
 
 class _ManualAttendancePageState extends State<ManualAttendancePage> {
-  final DateTime now = DateTime.now();
-
-  late DateTime selectedDate;
-  TimeOfDay initialEnterTime = const TimeOfDay(hour: 9, minute: 0);
-  TimeOfDay initialExitTime = const TimeOfDay(hour: 17, minute: 0);
+  DateTime now = DateTime.now();
 
   @override
   void initState() {
     super.initState();
-    selectedDate = DateTime(2024, 1, 28);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
+      appBar: AppBar(
+        title: const Text("Manual Attendance"),
+        leading: const Icon(Icons.arrow_back),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             DatePicker(
-              value: selectedDate,
+              value: now,
               hintText: "Please choose a date...",
               labelText: "Choose date",
               context: context,
               onSelectDate: (date) {
                 setState(() {
-                  selectedDate = date;
+                  now = date;
                 });
               },
             ),
+            const SizedBox(
+              height: 16,
+            ),
+            TimePickerText(
+              value: now,
+              hintText: "Please choose a time...",
+              labelText: "Time",
+              context: context,
+              onSelectTime: (value) {
+                final updateTime = DateTime(now.year, now.month, now.day,
+                    value.hour, value.minute, value.second);
+                setState(() {
+                  now = updateTime;
+                });
+              },
+            )
           ],
         ),
       ),
