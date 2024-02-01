@@ -1,4 +1,5 @@
 import 'package:attendance_prototype/models/user_login/user_login_model.dart';
+import 'package:attendance_prototype/pages/main/approval.page.dart';
 import 'package:attendance_prototype/utils/boxes.dart';
 import 'package:attendance_prototype/pages/main/account.page.dart';
 import 'package:attendance_prototype/pages/main/attendance_history.page.dart';
@@ -56,6 +57,9 @@ class _MainPageState extends State<MainPage> {
         screen = AccountPage(
           user: user,
         );
+        break;
+      case 'approval':
+        screen = const ApprovalPage();
         break;
       default:
         null;
