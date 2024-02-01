@@ -2,13 +2,16 @@ import 'package:attendance_prototype/pages/attendance/attendance.page.dart';
 import 'package:attendance_prototype/pages/auth/sign_in.page.dart';
 import 'package:attendance_prototype/pages/auth/sign_up.page.dart';
 import 'package:attendance_prototype/pages/main/main.page.dart';
+import 'package:attendance_prototype/pages/manual-attendance/manual_attendance.page.dart';
 import 'package:attendance_prototype/utils/constant.dart';
 import 'package:go_router/go_router.dart';
 
 class AppRouter {
   static GoRouter getRoutes(bool isUserAlreadyLogin) {
     return GoRouter(
-        initialLocation: isUserAlreadyLogin ? "/main" : '/signIn',
+        initialLocation: isUserAlreadyLogin
+            ? "/approval/attendance/manual-attendance"
+            : '/signIn',
         debugLogDiagnostics: true,
         routes: [
           GoRoute(
@@ -55,6 +58,13 @@ class AppRouter {
                 userId: userId!,
                 isUserClickIn: userState,
               );
+            },
+          ),
+          GoRoute(
+            name: "approval-manual-attendance",
+            path: "/approval/attendance/manual-attendance",
+            builder: (context, state) {
+              return const ManualAttendancePage();
             },
           ),
         ]);
