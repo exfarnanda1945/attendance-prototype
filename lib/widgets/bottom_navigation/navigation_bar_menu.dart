@@ -14,5 +14,7 @@ List<NavigationBarMenu> listNavigationBarMenu = [
   NavigationBarMenu(
       'Attendance', Icons.task_outlined, Icons.task, 'attendance'),
   NavigationBarMenu(
-      'Account', Icons.account_circle_outlined, Icons.account_circle, 'account')
+      "Approval", Icons.approval_outlined, Icons.approval, "approval"),
+  NavigationBarMenu('Account', Icons.account_circle_outlined,
+      Icons.account_circle, 'account'),
 ];
