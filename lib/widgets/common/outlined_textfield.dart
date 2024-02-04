@@ -10,8 +10,10 @@ class OutlinedTextField extends StatefulWidget {
     this.hintText,
     this.prefixIcon,
     this.validator,
+    this.maxLines,
   });
 
+  int? maxLines;
   String value;
   String labelText;
   ValueChanged<String> onChanged;
@@ -26,16 +28,18 @@ class OutlinedTextField extends StatefulWidget {
 
 class _OutlinedTextFieldState extends State<OutlinedTextField> {
   bool showPassword = false;
+
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      maxLines: 1,
+      maxLines: widget.maxLines ?? 1,
       initialValue: widget.value,
       onChanged: widget.onChanged,
       obscureText: widget.fieldType == FieldType.password && !showPassword,
       validator: widget.validator,
       decoration: InputDecoration(
-          prefixIcon: Icon(widget.prefixIcon),
+          prefixIcon:
+              widget.prefixIcon != null ? Icon(widget.prefixIcon) : null,
           suffixIcon: widget.fieldType == FieldType.password
               ? IconButton(
                   onPressed: () {
