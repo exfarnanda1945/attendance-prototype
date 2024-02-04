@@ -1,5 +1,8 @@
+import 'package:attendance_prototype/widgets/common/outlined_textfield.dart';
+import 'package:attendance_prototype/widgets/picker/approver/approverpicker.dart';
 import 'package:attendance_prototype/widgets/picker/datepicker.dart';
 import 'package:attendance_prototype/widgets/picker/timepicker.dart';
+import 'package:bottom_picker/bottom_picker.dart';
 import 'package:flutter/material.dart';
 
 class ManualAttendancePage extends StatefulWidget {
@@ -10,11 +13,12 @@ class ManualAttendancePage extends StatefulWidget {
 }
 
 class _ManualAttendancePageState extends State<ManualAttendancePage> {
-  DateTime now = DateTime.now();
+  late DateTime now;
 
   @override
   void initState() {
     super.initState();
+    now = DateTime.now();
   }
 
   @override
@@ -40,21 +44,31 @@ class _ManualAttendancePageState extends State<ManualAttendancePage> {
               },
             ),
             const SizedBox(
-              height: 16,
+              height: 28,
             ),
-            TimePickerText(
-              value: now,
+            TimePicker(
+              value: TimeOfDay.fromDateTime(now),
               hintText: "Please choose a time...",
               labelText: "Time",
               context: context,
               onSelectTime: (value) {
-                final updateTime = DateTime(now.year, now.month, now.day,
-                    value.hour, value.minute, value.second);
                 setState(() {
-                  now = updateTime;
+                  now = value;
                 });
               },
-            )
+            ),
+            const SizedBox(
+              height: 28,
+            ),
+            OutlinedTextField(
+                maxLines: 5,
+                labelText: "Reason",
+                onChanged: (value) {},
+                value: ""),
+            const SizedBox(
+              height: 28,
+            ),
+            const ApproverPicker()
           ],
         ),
       ),
