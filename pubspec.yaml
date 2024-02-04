@@ -49,8 +49,8 @@ dependencies:
   material_symbols_icons: ^4.2713.0
   dotted_border: ^2.1.0
   dropdown_button2: ^2.3.9
-  calendar_date_picker2: ^0.5.3
-  time_picker_wheel: ^0.1.1
+  bottom_picker: ^2.3.3
+  provider: ^6.1.1
 
 dev_dependencies:
   flutter_test:
