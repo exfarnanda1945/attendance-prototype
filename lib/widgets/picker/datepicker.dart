@@ -1,4 +1,4 @@
-import 'package:calendar_date_picker2/calendar_date_picker2.dart';
+import 'package:bottom_picker/bottom_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -25,22 +25,7 @@ class DatePicker extends StatelessWidget {
       key: Key(DateFormat.yMMMEd().format(value)),
       maxLines: 1,
       validator: validator,
-      onTap: () {
-        showModalBottomSheet(
-          context: context,
-          builder: (context) {
-            return CalendarDatePicker2(
-              config: CalendarDatePicker2WithActionButtonsConfig(),
-              value: [value],
-              onValueChanged: (dates) {
-                if (dates.isNotEmpty) {
-                  onSelectDate(dates.first!);
-                }
-              },
-            );
-          },
-        );
-      },
+      onTap: () => callDatePicker(),
       readOnly: true,
       initialValue: DateFormat.yMMMEd().format(value),
       decoration: InputDecoration(
@@ -49,5 +34,26 @@ class DatePicker extends StatelessWidget {
           hintText: hintText,
           labelText: labelText),
     );
+  }
+
+  callDatePicker() {
+    BottomPicker.date(
+      title:  'Please choose a date',
+      titleStyle:  const TextStyle(
+        fontSize:  15,
+        color:  Colors.black,
+      ),
+      onSubmit: (date) {
+        onSelectDate(date);
+      },
+      iconColor:  Colors.transparent,
+      buttonText: "Confirm",
+      buttonSingleColor: Colors.transparent,
+      buttonTextStyle: const TextStyle(
+        color: Colors.purple,
+        fontWeight: FontWeight.w600
+      ),
+      initialDateTime:  value,
+    ).show(context);
   }
 }

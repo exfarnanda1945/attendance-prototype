@@ -1,9 +1,9 @@
+import 'package:bottom_picker/bottom_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:time_picker_wheel/time_picker_wheel.dart';
+import 'package:go_router/go_router.dart';
 
-class TimePickerText extends StatelessWidget {
-  const TimePickerText(
+class TimePicker extends StatelessWidget {
+  const TimePicker(
       {super.key,
       required this.value,
       required this.hintText,
@@ -12,7 +12,7 @@ class TimePickerText extends StatelessWidget {
       required this.onSelectTime,
       this.validator});
 
-  final DateTime value;
+  final TimeOfDay value;
   final String hintText;
   final String labelText;
   final BuildContext context;
@@ -22,41 +22,42 @@ class TimePickerText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      key: Key(DateFormat('kk:mm').format(value)),
+      key: Key(timeStr()),
       maxLines: 1,
       validator: validator,
-      onTap: () {
-        showModalBottomSheet(
-            context: context,
-            builder: (context) {
-              return TimePicker(
-                onChange: (timeOfDay) {},
-                options: TimePickerOptions.byDefault(
-                  height: 200,
-                  itemExtent: 30,
-                  diameterRatio: 1,
-                  selectedRowHeight: 70,
-                  fontOpacity: 1,
-                  fontColor: Colors.purple,
-                  labelSize: 25,
-                  numberSize: 25,
-                  amPmSize: 15,
-                  amPmWidth: 25,
-                  wheelWidth: 50,
-                  selectedRowHorizontalPadding: double.maxFinite,
-                  selectedRowHorizontalBorderRadius: 0,
-                  selectedRowForegroundColor: Colors.black,
-                  selectedRowBackgroundColor: Colors.amber,
-                ),
-              );
-            });
-      },
+      onTap: () => callTimePicker(),
       readOnly: true,
+      initialValue: timeStr(),
       decoration: InputDecoration(
           suffixIcon: const Icon(Icons.arrow_forward_ios),
           border: const OutlineInputBorder(),
           hintText: hintText,
           labelText: labelText),
     );
+  }
+
+  String timeStr(){
+    final hour =  value.hour.toString().length == 1 ? "0${value.hour}" : value.hour;
+    final minute = value.minute.toString().length ==1 ? "0${value.minute}" : value.minute;
+    return "$hour:$minute";
+  }
+
+  callTimePicker() {
+    BottomPicker.time(
+      title: 'Please choose a date',
+      titleStyle: const TextStyle(
+        fontSize: 15,
+        color: Colors.black,
+      ),
+      onSubmit: (time) {
+        onSelectTime(time);
+      },
+      iconColor: Colors.transparent,
+      buttonText: "Confirm",
+      buttonSingleColor: Colors.transparent,
+      buttonTextStyle:
+          const TextStyle(color: Colors.purple, fontWeight: FontWeight.w600),
+      initialTime: Time(hours: value.hour, minutes: value.minute),
+    ).show(context);
   }
 }
