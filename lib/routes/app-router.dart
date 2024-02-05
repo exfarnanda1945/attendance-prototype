@@ -3,6 +3,8 @@ import 'package:attendance_prototype/pages/auth/sign_in.page.dart';
 import 'package:attendance_prototype/pages/auth/sign_up.page.dart';
 import 'package:attendance_prototype/pages/main/main.page.dart';
 import 'package:attendance_prototype/pages/manual-attendance/manual_attendance.page.dart';
+import 'package:attendance_prototype/pages/sick-approval/sick-add-edit-page.dart';
+import 'package:attendance_prototype/pages/sick-approval/sick-page.dart';
 import 'package:attendance_prototype/utils/constant.dart';
 import 'package:go_router/go_router.dart';
 
@@ -10,7 +12,7 @@ class AppRouter {
   static GoRouter getRoutes(bool isUserAlreadyLogin) {
     return GoRouter(
         initialLocation: isUserAlreadyLogin
-            ? "/approval/attendance/manual-attendance"
+            ? "/approval/sick"
             : '/signIn',
         debugLogDiagnostics: true,
         routes: [
@@ -65,6 +67,18 @@ class AppRouter {
             path: "/approval/attendance/manual-attendance",
             builder: (context, state) {
               return const ManualAttendancePage();
+            },
+          ),
+          GoRoute(
+            name: "sick",
+            path: "/approval/sick",
+            routes: [
+              GoRoute(path: "add-edit",name: "sick-add-edit",builder: (context, state) {
+                return const SickAddEditPage();
+              },)
+            ],
+            builder: (context, state) {
+              return const SickPage();
             },
           ),
         ]);
