@@ -2,7 +2,6 @@ import 'package:attendance_prototype/widgets/common/outlined_textfield.dart';
 import 'package:attendance_prototype/widgets/picker/approver/approverpicker.dart';
 import 'package:attendance_prototype/widgets/picker/datepicker.dart';
 import 'package:attendance_prototype/widgets/picker/timepicker.dart';
-import 'package:bottom_picker/bottom_picker.dart';
 import 'package:flutter/material.dart';
 
 class ManualAttendancePage extends StatefulWidget {
@@ -24,52 +23,65 @@ class _ManualAttendancePageState extends State<ManualAttendancePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text("Manual Attendance"),
         leading: const Icon(Icons.arrow_back),
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
-        child: Column(
-          children: [
-            DatePicker(
-              value: now,
-              hintText: "Please choose a date...",
-              labelText: "Choose date",
-              context: context,
-              onSelectDate: (date) {
-                setState(() {
-                  now = date;
-                });
-              },
-            ),
-            const SizedBox(
-              height: 28,
-            ),
-            TimePicker(
-              value: TimeOfDay.fromDateTime(now),
-              hintText: "Please choose a time...",
-              labelText: "Time",
-              context: context,
-              onSelectTime: (value) {
-                setState(() {
-                  now = value;
-                });
-              },
-            ),
-            const SizedBox(
-              height: 28,
-            ),
-            OutlinedTextField(
-                maxLines: 5,
-                labelText: "Reason",
-                onChanged: (value) {},
-                value: ""),
-            const SizedBox(
-              height: 28,
-            ),
-            const ApproverPicker()
-          ],
+      body: SingleChildScrollView(
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+          child: Column(
+            children: [
+              DatePicker(
+                value: now,
+                hintText: "Please choose a date...",
+                labelText: "Choose date",
+                context: context,
+                onSelectDate: (date) {
+                  setState(() {
+                    now = date;
+                  });
+                },
+              ),
+              const SizedBox(
+                height: 28,
+              ),
+              TimePicker(
+                value: TimeOfDay.fromDateTime(now),
+                hintText: "Please choose a time...",
+                labelText: "Time",
+                context: context,
+                onSelectTime: (value) {
+                  setState(() {
+                    now = value;
+                  });
+                },
+              ),
+              const SizedBox(
+                height: 28,
+              ),
+              OutlinedTextField(
+                  maxLines: 5,
+                  labelText: "Reason",
+                  onChanged: (value) {},
+                  value: ""),
+              const SizedBox(
+                height: 28,
+              ),
+              const ApproverPicker(),
+              const SizedBox(
+                height: 10
+              ),
+              ElevatedButton(style: ButtonStyle(
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(5)),
+                  ),
+                ),
+              ),onPressed: () {}, child: const Text("Add"))
+            ],
+          ),
         ),
       ),
     );
