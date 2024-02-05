@@ -103,12 +103,27 @@ class ApproverPicker extends StatelessWidget {
         const SizedBox(
           height: 14,
         ),
-        const Card(
-          child: ListTile(
-            title: Text("Miko",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 16),),
-            trailing:Icon(Icons.delete,color: Colors.red,),
-            subtitle: Text("Code: HR01",style: TextStyle(fontWeight: FontWeight.w500,fontSize: 14),),
-          ),
+        ListView.builder(
+          shrinkWrap: true,
+          itemCount: 4,
+          itemBuilder: (context, index) {
+            return const Card(
+              child: ListTile(
+                title: Text(
+                  "Miko",
+                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
+                ),
+                trailing: Icon(
+                  Icons.delete,
+                  color: Colors.red,
+                ),
+                subtitle: Text(
+                  "Code: HR01",
+                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14),
+                ),
+              ),
+            );
+          },
         )
       ],
     );
