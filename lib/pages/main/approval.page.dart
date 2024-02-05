@@ -52,19 +52,17 @@ class ApprovalPage extends StatelessWidget {
         final subMenuItem = item.subMenu[index];
         return Padding(
           padding: const EdgeInsets.only(bottom: 12),
-          child: Expanded(
-            child: Row(
-              children: [
-                Icon(
-                  subMenuItem.icon,
-                  size: 32,
-                ),
-                const SizedBox(
-                  width: 16,
-                ),
-                Text(subMenuItem.title)
-              ],
-            ),
+          child: Row(
+            children: [
+              Icon(
+                subMenuItem.icon,
+                size: 32,
+              ),
+              const SizedBox(
+                width: 16,
+              ),
+              Text(subMenuItem.title)
+            ],
           ),
         );
       },
