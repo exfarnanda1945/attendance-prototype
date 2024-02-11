@@ -1,6 +1,5 @@
 import 'package:bottom_picker/bottom_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 class TimePicker extends StatelessWidget {
   const TimePicker(
@@ -12,7 +11,7 @@ class TimePicker extends StatelessWidget {
       required this.onSelectTime,
       this.validator});
 
-  final TimeOfDay value;
+  final DateTime value;
   final String hintText;
   final String labelText;
   final BuildContext context;
@@ -36,9 +35,11 @@ class TimePicker extends StatelessWidget {
     );
   }
 
-  String timeStr(){
-    final hour =  value.hour.toString().length == 1 ? "0${value.hour}" : value.hour;
-    final minute = value.minute.toString().length ==1 ? "0${value.minute}" : value.minute;
+  String timeStr() {
+    final hour =
+        value.hour.toString().length == 1 ? "0${value.hour}" : value.hour;
+    final minute =
+        value.minute.toString().length == 1 ? "0${value.minute}" : value.minute;
     return "$hour:$minute";
   }
 
@@ -49,8 +50,10 @@ class TimePicker extends StatelessWidget {
         fontSize: 15,
         color: Colors.black,
       ),
-      onSubmit: (time) {
-        onSelectTime(time);
+      onSubmit: (date) {
+        final selectedDate = date as DateTime;
+        onSelectTime(DateTime(value.year, value.month, value.day,
+            selectedDate.hour, selectedDate.month));
       },
       iconColor: Colors.transparent,
       buttonText: "Confirm",
