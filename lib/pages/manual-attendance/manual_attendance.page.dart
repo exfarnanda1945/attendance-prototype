@@ -48,7 +48,7 @@ class _ManualAttendancePageState extends State<ManualAttendancePage> {
                 height: 28,
               ),
               TimePicker(
-                value: TimeOfDay.fromDateTime(now),
+                value: now,
                 hintText: "Please choose a time...",
                 labelText: "Time",
                 context: context,
