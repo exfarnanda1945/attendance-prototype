@@ -31,9 +31,11 @@ List<ApprovalMenu> approvalMenu = [
     ApprovalSubMenu(
         icon: Icons.medication_outlined, title: "Sick", onNavigate: "sick"),
     ApprovalSubMenu(
-        icon: Symbols.tab_move,
-        title: "Out Off Office",
-        onNavigate: "out-off-office")
+        icon: Symbols.digital_out_of_home,
+        title: "Out From Work",
+        onNavigate: "ofw"),
+    ApprovalSubMenu(
+        icon: Symbols.tab_move, title: "Out From Office", onNavigate: "ofo")
   ]),
   ApprovalMenu(title: "Work", subMenu: const [
     ApprovalSubMenu(
