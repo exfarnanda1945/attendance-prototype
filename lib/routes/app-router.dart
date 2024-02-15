@@ -9,13 +9,15 @@ import 'package:attendance_prototype/pages/auth/sign_in.page.dart';
 import 'package:attendance_prototype/pages/auth/sign_up.page.dart';
 import 'package:attendance_prototype/pages/main/main.page.dart';
 import 'package:attendance_prototype/pages/manual-attendance/manual_attendance.page.dart';
+import 'package:attendance_prototype/pages/soon/feature_soon.page.dart';
 import 'package:attendance_prototype/utils/constant.dart';
 import 'package:go_router/go_router.dart';
 
 class AppRouter {
   static GoRouter getRoutes(bool isUserAlreadyLogin) {
     return GoRouter(
-        initialLocation: isUserAlreadyLogin ? "/approval/ofo" : '/signIn',
+        // initialLocation: isUserAlreadyLogin ? "/approval/ofw" : '/signIn',
+      initialLocation: "/feature-soon",
         debugLogDiagnostics: true,
         routes: [
           GoRoute(
@@ -119,6 +121,9 @@ class AppRouter {
               return const OfoApprovalPage();
             },
           ),
+          GoRoute(path: "/feature-soon",name: "feature-soon",builder: (context, state) {
+            return const FeatureSoonPage();
+          },)
         ]);
   }
 }
