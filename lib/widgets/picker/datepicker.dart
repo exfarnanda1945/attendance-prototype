@@ -38,22 +38,20 @@ class DatePicker extends StatelessWidget {
 
   callDatePicker() {
     BottomPicker.date(
-      title:  'Please choose a date',
-      titleStyle:  const TextStyle(
-        fontSize:  15,
-        color:  Colors.black,
+      title: 'Please choose a date',
+      titleStyle: const TextStyle(
+        fontSize: 15,
+        color: Colors.black,
       ),
+      displaySubmitButton: true,
       onSubmit: (date) {
         onSelectDate(date);
       },
-      iconColor:  Colors.transparent,
-      buttonText: "Confirm",
-      buttonSingleColor: Colors.transparent,
-      buttonTextStyle: const TextStyle(
-        color: Colors.purple,
-        fontWeight: FontWeight.w600
+      buttonStyle: BoxDecoration(
+        color: Theme.of(context).primaryColor,
+        borderRadius: BorderRadius.circular(10),
       ),
-      initialDateTime:  value,
+      initialDateTime: value,
     ).show(context);
   }
 }

@@ -55,11 +55,11 @@ class TimePicker extends StatelessWidget {
         onSelectTime(DateTime(value.year, value.month, value.day,
             selectedDate.hour, selectedDate.month));
       },
-      iconColor: Colors.transparent,
-      buttonText: "Confirm",
-      buttonSingleColor: Colors.transparent,
-      buttonTextStyle:
-          const TextStyle(color: Colors.purple, fontWeight: FontWeight.w600),
+      displaySubmitButton: true,
+      buttonStyle: BoxDecoration(
+        color: Theme.of(context).primaryColor,
+        borderRadius: BorderRadius.circular(10),
+      ),
       initialTime: Time(hours: value.hour, minutes: value.minute),
     ).show(context);
   }
