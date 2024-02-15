@@ -48,7 +48,7 @@ dependencies:
   permission_handler: ^11.0.1
   material_symbols_icons: ^4.2713.0
   dotted_border: ^2.1.0
-  bottom_picker: ^2.3.3
+  bottom_picker: ^2.4.0
   provider: ^6.1.1
 
 dev_dependencies:
