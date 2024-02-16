@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:attendance_prototype/models/attendance/attendance_model.dart';
 import 'package:attendance_prototype/models/attendance/enter_detail/attendance_enter_detail_model.dart';
 import 'package:attendance_prototype/models/attendance/exit_detail/attendance_exit_detail_model.dart';
@@ -9,6 +7,7 @@ import 'package:attendance_prototype/pages/attendance/error_maps_attendance.dart
 import 'package:attendance_prototype/pages/attendance/maps_attendance.dart';
 import 'package:attendance_prototype/utils/boxes.dart';
 import 'package:attendance_prototype/utils/constant.dart';
+import 'package:attendance_prototype/widgets/buttons/primary-button.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
@@ -21,15 +20,15 @@ import 'package:uuid/uuid.dart';
 const uuid = Uuid();
 
 class AttendancePage extends StatefulWidget {
-  AttendancePage(
+  const AttendancePage(
       {super.key,
       required this.userId,
       required this.isUserClickIn,
       required this.attendanceId});
 
-  String userId;
-  bool isUserClickIn;
-  String? attendanceId;
+  final String userId;
+  final bool isUserClickIn;
+  final String? attendanceId;
 
   @override
   State<AttendancePage> createState() => _AttendancePageState();
@@ -101,18 +100,19 @@ class _AttendancePageState extends State<AttendancePage> {
                 children: [
                   Text(
                     "SSID : $deviceNetworkName",
-                    style: const TextStyle(fontWeight: FontWeight.w400),
+                    style: const TextStyle(
+                        fontWeight: FontWeight.w400, fontSize: 14),
                   ),
                   Text("IP: $deviceNetworkIp",
-                      style: const TextStyle(fontWeight: FontWeight.w400)),
+                      style: const TextStyle(
+                          fontWeight: FontWeight.w400, fontSize: 14)),
                   const SizedBox(
                     height: 20,
                   ),
-                  ElevatedButton(
-                    onPressed: upsertAttendance,
-                    child:
-                        Text(widget.isUserClickIn ? "Click In" : "Click out"),
-                  )
+                  PrimaryButton(
+                      title: widget.isUserClickIn ? "Click In" : "Click out",
+                      width: 190,
+                      onPressed: upsertAttendance)
                 ],
               ),
             ),
@@ -231,7 +231,6 @@ class _AttendancePageState extends State<AttendancePage> {
         Fluttertoast.showToast(msg: "Click out successfully");
         if (mounted) context.pop(true);
       } catch (e) {
-        print(e.toString());
         Fluttertoast.showToast(msg: "Something went wrong...");
       }
     }

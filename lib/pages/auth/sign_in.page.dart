@@ -1,6 +1,7 @@
 import 'package:attendance_prototype/models/user/user_model.dart';
 import 'package:attendance_prototype/models/user_login/user_login_model.dart';
 import 'package:attendance_prototype/utils/boxes.dart';
+import 'package:attendance_prototype/widgets/buttons/primary-button.dart';
 import 'package:attendance_prototype/widgets/forms/sign_in_form.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -54,12 +55,13 @@ class _SignInPageState extends State<SignInPage> {
                 },
               ),
             ),
-            ElevatedButton(
+            const SizedBox(
+              height: 10,
+            ),
+            PrimaryButton(
+              title: "Login",
               onPressed: login,
-              child: const Text(
-                'Login',
-                style: TextStyle(fontSize: 18),
-              ),
+              width: 190,
             ),
             const SizedBox(
               height: 50,
@@ -78,7 +80,7 @@ class _SignInPageState extends State<SignInPage> {
                     style: TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 15,
-                        color: Theme.of(context).primaryColor),
+                        color: Theme.of(context).colorScheme.primary),
                   ),
                 )
               ],

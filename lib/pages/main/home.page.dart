@@ -1,6 +1,7 @@
 import 'package:attendance_prototype/models/attendance/attendance_model.dart';
 import 'package:attendance_prototype/utils/boxes.dart';
 import 'package:attendance_prototype/utils/constant.dart';
+import 'package:attendance_prototype/widgets/buttons/primary-button.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -58,7 +59,7 @@ class _HomePageState extends State<HomePage> {
                         TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                 Text(
                     isUserClickOutToday()
-                        ? "${latestUserAttendance?.exit?.time?.hour}:${latestUserAttendance?.exit?.time?.minute}"
+                        ? "${latestUserAttendance?.exit?.time.hour}:${latestUserAttendance?.exit?.time.minute}"
                         : "--",
                     style: const TextStyle(fontSize: 18))
               ],
@@ -69,9 +70,11 @@ class _HomePageState extends State<HomePage> {
           height: 40,
         ),
         !isFinishToday
-            ? ElevatedButton(
-                onPressed: () => isFinishToday ? null : goToAttendancePage(),
-                child: buildTextBtn())
+            ?
+            PrimaryButton(
+                title: buildTextBtn(),
+                width: 180,
+                onPressed: () => isFinishToday ? null : goToAttendancePage())
             : const Text(""),
       ],
     );
@@ -97,7 +100,7 @@ class _HomePageState extends State<HomePage> {
     return latest;
   }
 
-  Widget buildTextBtn() {
+  String buildTextBtn() {
     String text = "";
 
     if (isUserClickInToday()) {
@@ -108,7 +111,7 @@ class _HomePageState extends State<HomePage> {
       text = "Click In";
     }
 
-    return Text(text);
+    return text;
   }
 
   goToAttendancePage() async {

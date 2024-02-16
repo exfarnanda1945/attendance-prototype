@@ -1,5 +1,6 @@
 import 'package:attendance_prototype/models/user/user_model.dart';
 import 'package:attendance_prototype/utils/boxes.dart';
+import 'package:attendance_prototype/widgets/buttons/primary-button.dart';
 import 'package:attendance_prototype/widgets/forms/sign_up_form.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -62,12 +63,13 @@ class _SignUpPageState extends State<SignUpPage> {
                     });
                   }),
             ),
-            ElevatedButton(
+            const SizedBox(
+              height: 10,
+            ),
+            PrimaryButton(
               onPressed: registerUser,
-              child: const Text(
-                'Create Account',
-                style: TextStyle(fontSize: 18),
-              ),
+              title: "Create Account",
+              width: 190,
             ),
             const SizedBox(
               height: 50,
@@ -86,7 +88,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     style: TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 15,
-                        color: Theme.of(context).primaryColor),
+                        color: Theme.of(context).colorScheme.primary),
                   ),
                 )
               ],
