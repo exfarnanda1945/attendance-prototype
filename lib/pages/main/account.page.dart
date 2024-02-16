@@ -1,11 +1,13 @@
 import 'package:attendance_prototype/models/user_login/user_login_model.dart';
 import 'package:attendance_prototype/utils/boxes.dart';
+import 'package:attendance_prototype/widgets/buttons/primary-button.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class AccountPage extends StatelessWidget {
-  AccountPage({super.key, required this.user});
-  UserLoginModel user;
+  const AccountPage({super.key, required this.user});
+
+  final UserLoginModel user;
 
   @override
   Widget build(BuildContext context) {
@@ -21,11 +23,8 @@ class AccountPage extends StatelessWidget {
               style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
             ),
           ),
-          OutlinedButton(
-              onPressed: () => logout(context),
-              style: OutlinedButton.styleFrom(
-                  side: BorderSide(color: Theme.of(context).primaryColor)),
-              child: const Text("Sign Out"))
+          PrimaryButton(
+              title: "Sign Out", width: 180, onPressed: () => logout(context))
         ],
       ),
     );
