@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:attendance_prototype/color_schemes.g.dart';
 import 'package:attendance_prototype/models/attendance/attendance_model.dart';
 import 'package:attendance_prototype/models/attendance/enter_detail/attendance_enter_detail_model.dart';
 import 'package:attendance_prototype/models/attendance/exit_detail/attendance_exit_detail_model.dart';
@@ -52,10 +53,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp.router(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
+      theme: ThemeData(useMaterial3: true, colorScheme: lightColorScheme),
+      darkTheme: ThemeData(useMaterial3: true, colorScheme: darkColorScheme),
       routerConfig: AppRouter.getRoutes(isUserAlreadyLogin),
     );
   }
