@@ -1,5 +1,6 @@
 import 'package:attendance_prototype/models/menu/approval-menu-list.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class ApprovalPage extends StatelessWidget {
   const ApprovalPage({super.key});
@@ -50,19 +51,24 @@ class ApprovalPage extends StatelessWidget {
       shrinkWrap: true,
       itemBuilder: (context, index) {
         final subMenuItem = item.subMenu[index];
-        return Padding(
-          padding: const EdgeInsets.only(bottom: 12),
-          child: Row(
-            children: [
-              Icon(
-                subMenuItem.icon,
-                size: 32,
-              ),
-              const SizedBox(
-                width: 16,
-              ),
-              Text(subMenuItem.title)
-            ],
+        return GestureDetector(
+          onTap: () {
+            context.pushNamed(subMenuItem.pathNavigate);
+          },
+          child: Padding(
+            padding: const EdgeInsets.only(bottom: 12),
+            child: Row(
+              children: [
+                Icon(
+                  subMenuItem.icon,
+                  size: 32,
+                ),
+                const SizedBox(
+                  width: 16,
+                ),
+                Text(subMenuItem.title)
+              ],
+            ),
           ),
         );
       },
