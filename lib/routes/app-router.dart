@@ -16,8 +16,7 @@ import 'package:go_router/go_router.dart';
 class AppRouter {
   static GoRouter getRoutes(bool isUserAlreadyLogin) {
     return GoRouter(
-        // initialLocation: isUserAlreadyLogin ? "/approval/ofw" : '/signIn',
-      initialLocation: "/feature-soon",
+        initialLocation: isUserAlreadyLogin ? "/main" : '/signIn',
         debugLogDiagnostics: true,
         routes: [
           GoRoute(
