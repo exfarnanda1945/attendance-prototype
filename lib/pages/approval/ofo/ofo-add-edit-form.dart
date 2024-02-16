@@ -88,6 +88,5 @@ class _OfoAddEditFormState extends State<OfoAddEditForm> {
         const ApproverPicker()
       ],
     );
-    ;
   }
 }

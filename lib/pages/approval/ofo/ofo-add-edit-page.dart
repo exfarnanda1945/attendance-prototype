@@ -32,6 +32,6 @@ class OfoAddEditPage extends StatelessWidget {
           ),
         ),
       ),
-    );;
+    );
   }
 }

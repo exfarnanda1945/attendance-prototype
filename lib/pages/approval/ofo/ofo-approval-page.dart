@@ -69,6 +69,6 @@ class OfoApprovalPage extends StatelessWidget {
           )
         ],
       ),
-    );;
+    );
   }
 }

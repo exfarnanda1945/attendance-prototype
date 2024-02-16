@@ -36,6 +36,6 @@ class CounterCard extends StatelessWidget {
           ],
         ),
       ),
-    );;
+    );
   }
 }
