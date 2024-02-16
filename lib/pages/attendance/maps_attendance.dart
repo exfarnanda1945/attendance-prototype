@@ -3,9 +3,9 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class MapsAttendance extends StatelessWidget {
-  MapsAttendance({super.key, required this.position});
+  const MapsAttendance({super.key, required this.position});
 
-  Position position;
+ final Position position;
 
   @override
   Widget build(BuildContext context) {

@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class AttendanceCard extends StatelessWidget {
-  AttendanceCard({super.key, required this.attendanceItem});
+ const AttendanceCard({super.key, required this.attendanceItem});
 
-  AttendanceModel attendanceItem;
+  final AttendanceModel attendanceItem;
 
   @override
   Widget build(BuildContext context) {

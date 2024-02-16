@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
 class ErrorMapsAttendance extends StatelessWidget {
-  ErrorMapsAttendance(
+  const ErrorMapsAttendance(
       {super.key, required this.onRefresh, required this.message});
 
-  VoidCallback onRefresh;
-  String message;
+  final VoidCallback onRefresh;
+  final String message;
 
   @override
   Widget build(BuildContext context) {

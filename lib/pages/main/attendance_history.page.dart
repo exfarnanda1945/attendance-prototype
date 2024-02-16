@@ -5,9 +5,9 @@ import 'package:attendance_prototype/widgets/cards/attendance_card.dart';
 import 'package:flutter/material.dart';
 
 class AttendanceHistoryPage extends StatelessWidget {
-  AttendanceHistoryPage({super.key, required this.userLogin});
+  const AttendanceHistoryPage({super.key, required this.userLogin});
 
-  UserLoginModel userLogin;
+ final UserLoginModel userLogin;
 
   @override
   Widget build(BuildContext context) {
