@@ -7,6 +7,7 @@ import 'package:attendance_prototype/pages/attendance/error_maps_attendance.dart
 import 'package:attendance_prototype/pages/attendance/maps_attendance.dart';
 import 'package:attendance_prototype/utils/boxes.dart';
 import 'package:attendance_prototype/utils/constant.dart';
+import 'package:attendance_prototype/widgets/appbar/custom-app-bar.dart';
 import 'package:attendance_prototype/widgets/buttons/primary-button.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -52,9 +53,7 @@ class _AttendancePageState extends State<AttendancePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Today"),
-      ),
+      appBar: const CustomAppBar(title: "Today", useArrowBack: true),
       body: renderBody(),
     );
   }

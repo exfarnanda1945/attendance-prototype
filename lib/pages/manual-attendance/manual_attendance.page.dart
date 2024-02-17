@@ -1,3 +1,4 @@
+import 'package:attendance_prototype/widgets/appbar/custom-app-bar.dart';
 import 'package:attendance_prototype/widgets/common/outlined_textfield.dart';
 import 'package:attendance_prototype/widgets/picker/approver/approverpicker.dart';
 import 'package:attendance_prototype/widgets/picker/datepicker.dart';
@@ -24,13 +25,13 @@ class _ManualAttendancePageState extends State<ManualAttendancePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        title: const Text("Manual Attendance"),
-        leading: const Icon(Icons.arrow_back),
+      appBar: const CustomAppBar(
+        title: "Manual Attendance",
+        useArrowBack: true,
       ),
       body: SingleChildScrollView(
         child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+          padding: const EdgeInsets.all(20),
           child: Column(
             children: [
               DatePicker(
