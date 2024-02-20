@@ -6,10 +6,15 @@ class PrimaryButton extends StatelessWidget {
     required this.onPressed,
     this.height = 48,
     this.width = double
-        .infinity,});
+        .infinity,
+  this.textStyle = const TextStyle(
+      fontWeight: FontWeight.w500,fontSize: 15
+  )
+  });
 
   final String title;
   final void Function() onPressed;
+  final TextStyle textStyle;
 
   double? height;
   double? width;
@@ -33,9 +38,7 @@ class PrimaryButton extends StatelessWidget {
             shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           ),
-          child: Text(title,style: const TextStyle(
-            fontWeight: FontWeight.w500,fontSize: 15
-          ),)),
+          child: Text(title,style: textStyle)),
     );
   }
 }

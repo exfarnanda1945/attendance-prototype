@@ -16,7 +16,9 @@ import 'package:go_router/go_router.dart';
 class AppRouter {
   static GoRouter getRoutes(bool isUserAlreadyLogin) {
     return GoRouter(
-        initialLocation: isUserAlreadyLogin ? "/main" : '/signIn',
+        initialLocation: isUserAlreadyLogin
+            ? "/approval/attendance/manual-attendance"
+            : '/signIn',
         debugLogDiagnostics: true,
         routes: [
           GoRoute(
@@ -120,9 +122,13 @@ class AppRouter {
               return const OfoApprovalPage();
             },
           ),
-          GoRoute(path: "/feature-soon",name: "feature-soon",builder: (context, state) {
-            return const FeatureSoonPage();
-          },)
+          GoRoute(
+            path: "/feature-soon",
+            name: "feature-soon",
+            builder: (context, state) {
+              return const FeatureSoonPage();
+            },
+          )
         ]);
   }
 }

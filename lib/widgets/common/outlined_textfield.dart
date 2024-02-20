@@ -14,9 +14,9 @@ class OutlinedTextField extends StatefulWidget {
   });
 
   int? maxLines;
-  String value;
-  String labelText;
-  ValueChanged<String> onChanged;
+  final String value;
+  final String labelText;
+  final ValueChanged<String> onChanged;
   String? hintText;
   IconData? prefixIcon;
   FieldType? fieldType = FieldType.regular;
@@ -37,7 +37,9 @@ class _OutlinedTextFieldState extends State<OutlinedTextField> {
       onChanged: widget.onChanged,
       obscureText: widget.fieldType == FieldType.password && !showPassword,
       validator: widget.validator,
+      textAlignVertical: TextAlignVertical.top,
       decoration: InputDecoration(
+        alignLabelWithHint: true,
           prefixIcon:
               widget.prefixIcon != null ? Icon(widget.prefixIcon) : null,
           suffixIcon: widget.fieldType == FieldType.password
